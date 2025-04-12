@@ -1,9 +1,12 @@
 package com.dragonhack.pejmo.controllers;
 
+import com.dragonhack.pejmo.dtos.PassengerCreateDTO;
 import com.dragonhack.pejmo.dtos.PassengerGetDTO;
 import com.dragonhack.pejmo.services.PassengerService;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
@@ -17,18 +20,23 @@ public class PassengerController {
     }
 
     @GetMapping()
-    public List<PassengerGetDTO> getAllPassengers() {
-        return passengerService.getAllPassengers();
+    public List<PassengerGetDTO> getAllPassengers(
+            @RequestParam(required = false, defaultValue = "") String fromLocation,
+            @RequestParam(required = false, defaultValue = "") String toLocation,
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime startTime) {
+        if (startTime == null)
+            startTime = LocalDateTime.now();
+        return passengerService.getAllPassengers(fromLocation, toLocation, startTime);
     }
 
-    @GetMapping("/{id}")
-    public PassengerGetDTO getPassengerById(@PathVariable Long id) {
-        return passengerService.getPassengerById(id);
+    @GetMapping("/{username}")
+    public PassengerGetDTO getPassengerById(@PathVariable String username) {
+        return passengerService.getPassengerListingByUsername(username);
     }
 
     @PostMapping()
-    public String createPassenger() {
-        return passengerService.createPassenger();
+    public void createPassenger(@RequestBody PassengerCreateDTO dto) {
+        passengerService.createPassenger(dto);
     }
 
     @PostMapping("/{id}/invite")

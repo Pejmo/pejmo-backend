@@ -7,7 +7,6 @@ import com.dragonhack.pejmo.models.User;
 import com.dragonhack.pejmo.repositories.RideListingRepository;
 import com.dragonhack.pejmo.repositories.UserRepository;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
