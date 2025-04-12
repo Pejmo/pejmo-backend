@@ -39,9 +39,9 @@ public class PassengerController {
         passengerService.createPassenger(dto);
     }
 
-    @PostMapping("/{id}/invite")
-    public String invitePassenger(@PathVariable Long id) {
-        return passengerService.invitePassenger(id);
+    @PostMapping("/{username}/offer/{id}")
+    public void offerRide(@PathVariable String username, @PathVariable long id) {
+        passengerService.offerRide(username, id);
     }
 
     @DeleteMapping("/{id}")

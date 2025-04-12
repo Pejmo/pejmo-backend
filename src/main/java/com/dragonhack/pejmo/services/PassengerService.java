@@ -3,10 +3,13 @@ package com.dragonhack.pejmo.services;
 import com.dragonhack.pejmo.dtos.PassengerCreateDTO;
 import com.dragonhack.pejmo.dtos.PassengerGetDTO;
 import com.dragonhack.pejmo.dtos.RideOfferDTO;
+import com.dragonhack.pejmo.exceptions.conflict.ConflictException;
 import com.dragonhack.pejmo.exceptions.resource_not_found.ResourceNotFoundException;
 import com.dragonhack.pejmo.models.PassengerListing;
+import com.dragonhack.pejmo.models.RideOffer;
 import com.dragonhack.pejmo.models.User;
 import com.dragonhack.pejmo.repositories.PassengerRepository;
+import com.dragonhack.pejmo.repositories.RideOfferRepository;
 import com.dragonhack.pejmo.repositories.UserRepository;
 import org.springframework.stereotype.Service;
 
@@ -18,11 +21,13 @@ public class PassengerService {
     private final PassengerRepository passengerRepository;
     private final UserService userService;
     private final UserRepository userRepository;
+    private final RideOfferRepository rideOfferRepository;
 
-    public PassengerService(PassengerRepository passengerRepository, UserService userService, UserRepository userRepository) {
+    public PassengerService(PassengerRepository passengerRepository, UserService userService, UserRepository userRepository, RideOfferRepository rideOfferRepository) {
         this.passengerRepository = passengerRepository;
         this.userService = userService;
         this.userRepository = userRepository;
+        this.rideOfferRepository = rideOfferRepository;
     }
 
     public List<PassengerGetDTO> getAllPassengers(String fromLocation, String toLocation, LocalDateTime startTime) {
@@ -59,7 +64,8 @@ public class PassengerService {
                 .map(offer -> new RideOfferDTO(
                         offer.getDriver().getFirstName(),
                         offer.getDriver().getLastName(),
-                        offer.getDriver().getUsername()
+                        offer.getDriver().getUsername(),
+                        offer.getOfferStatus()
                 ))
                 .toList();
 
@@ -81,6 +87,10 @@ public class PassengerService {
                 () -> new ResourceNotFoundException("User with username " + dto.username() + " not found")
         );
 
+        if (passengerRepository.findByPassenger(user).isPresent()) {
+            throw new ConflictException("User " + dto.username() + " already has an existing passenger listing.");
+        }
+
         PassengerListing listing = new PassengerListing();
         listing.setFromLocation(dto.fromLocation());
         listing.setToLocation(dto.toLocation());
@@ -92,8 +102,25 @@ public class PassengerService {
         passengerRepository.save(listing);
     }
 
-    public String invitePassenger(Long id) {
-        return "invitePassenger";
+    public void offerRide(String username, long id) {
+        User driver = userRepository.findByUsername(username)
+                .orElseThrow(() -> new IllegalArgumentException("Driver not found"));
+
+        PassengerListing passengerListing = passengerRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Passenger listing not found"));
+
+        if (driver.equals(passengerListing.getPassenger())) {
+            throw new ConflictException("You cannot offer a ride to your own passenger listing.");
+        }
+
+        RideOffer rideOffer = new RideOffer();
+        rideOffer.setDriver(driver);
+        rideOffer.setPassengerListing(passengerListing);
+        rideOffer.setOfferStatus("Pending");
+
+        passengerListing.getDriverOffers().add(rideOffer);
+
+        rideOfferRepository.save(rideOffer);
     }
 
     public String deletePassenger(Long id) {
