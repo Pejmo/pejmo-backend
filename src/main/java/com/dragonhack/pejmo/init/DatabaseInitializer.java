@@ -39,7 +39,15 @@ public class DatabaseInitializer {
             bob.setEmail("bob@example.com");
             bob.setKycStatus("validated");
 
-            userRepository.saveAll(List.of(alice, bob));
+            User tom = new User();
+            tom.setUsername("tom");
+            tom.setPassword(passwordEncoder.encode("password3"));
+            tom.setFirstName("Tom");
+            tom.setLastName("Builder");
+            tom.setEmail("bob@example.com");
+            tom.setKycStatus("validated");
+
+            userRepository.saveAll(List.of(alice, bob, tom));
 
             // Create Reviews
             Review r1 = new Review();

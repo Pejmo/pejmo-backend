@@ -18,8 +18,9 @@ public class RideOffer {
     @JoinColumn(name = "passenger_listing_id", nullable = false)
     private PassengerListing passengerListing;
 
+    @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private String offerStatus;
+    private OfferStatus offerStatus;
 
     public Long getId() {
         return id;
@@ -45,11 +46,11 @@ public class RideOffer {
         this.passengerListing = passengerListing;
     }
 
-    public String getOfferStatus() {
+    public OfferStatus getOfferStatus() {
         return offerStatus;
     }
 
-    public void setOfferStatus(String offerStatus) {
+    public void setOfferStatus(OfferStatus offerStatus) {
         this.offerStatus = offerStatus;
     }
 
@@ -59,7 +60,7 @@ public class RideOffer {
                 "id=" + id +
                 ", driver=" + driver.getUsername() +
                 ", passengerListing=" + passengerListing.getId() +
-                ", offerStatus='" + offerStatus + '\'' +
+                ", offerStatus=" + offerStatus +
                 '}';
     }
 }

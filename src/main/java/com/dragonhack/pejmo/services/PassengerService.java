@@ -5,6 +5,7 @@ import com.dragonhack.pejmo.dtos.PassengerGetDTO;
 import com.dragonhack.pejmo.dtos.RideOfferDTO;
 import com.dragonhack.pejmo.exceptions.conflict.ConflictException;
 import com.dragonhack.pejmo.exceptions.resource_not_found.ResourceNotFoundException;
+import com.dragonhack.pejmo.models.OfferStatus;
 import com.dragonhack.pejmo.models.PassengerListing;
 import com.dragonhack.pejmo.models.RideOffer;
 import com.dragonhack.pejmo.models.User;
@@ -39,6 +40,7 @@ public class PassengerService {
 
     private PassengerGetDTO convertToDTO(PassengerListing passengerListing) {
         return new PassengerGetDTO(
+                passengerListing.getId(),
                 passengerListing.getFromLocation(),
                 passengerListing.getToLocation(),
                 passengerListing.getPassenger().getFirstName(),
@@ -62,6 +64,7 @@ public class PassengerService {
 
         List<RideOfferDTO> rideOffers = passengerListing.getDriverOffers().stream()
                 .map(offer -> new RideOfferDTO(
+                        offer.getId(),
                         offer.getDriver().getFirstName(),
                         offer.getDriver().getLastName(),
                         offer.getDriver().getUsername(),
@@ -70,6 +73,7 @@ public class PassengerService {
                 .toList();
 
         return new PassengerGetDTO(
+                passengerListing.getId(),
                 passengerListing.getFromLocation(),
                 passengerListing.getToLocation(),
                 user.getFirstName(),
@@ -116,11 +120,47 @@ public class PassengerService {
         RideOffer rideOffer = new RideOffer();
         rideOffer.setDriver(driver);
         rideOffer.setPassengerListing(passengerListing);
-        rideOffer.setOfferStatus("Pending");
+        rideOffer.setOfferStatus(OfferStatus.PENDING);
 
         passengerListing.getDriverOffers().add(rideOffer);
 
         rideOfferRepository.save(rideOffer);
+    }
+
+    public void acceptOfferedRide(String username, long offerId) {
+        RideOffer rideOffer = rideOfferRepository.findById(offerId)
+                .orElseThrow(() -> new ResourceNotFoundException("Ride offer with id " + offerId + " not found"));
+
+        if (!rideOffer.getPassengerListing().getPassenger().getUsername().equals(username)) {
+            throw new ConflictException("This ride offer is not for the specified passenger.");
+        }
+
+        List<RideOffer> acceptedOffers = rideOfferRepository.findByPassengerListing_PassengerAndOfferStatus(
+                rideOffer.getPassengerListing().getPassenger(), OfferStatus.ACCEPTED);
+
+        if (!acceptedOffers.isEmpty()) {
+            throw new ConflictException("This passenger has already accepted a ride offer.");
+        }
+
+        rideOffer.setOfferStatus(OfferStatus.ACCEPTED);
+        rideOfferRepository.save(rideOffer);
+    }
+
+    public List<RideOfferDTO> getAcceptedOffersByDriver(String username) {
+        User driver = userRepository.findByUsername(username)
+                .orElseThrow(() -> new ResourceNotFoundException("Driver not found"));
+
+        List<RideOffer> acceptedOffers = rideOfferRepository.findByDriverAndOfferStatus(driver, OfferStatus.ACCEPTED);
+
+        return acceptedOffers.stream()
+                .map(offer -> new RideOfferDTO(
+                        offer.getId(),
+                        offer.getDriver().getFirstName(),
+                        offer.getDriver().getLastName(),
+                        offer.getDriver().getUsername(),
+                        offer.getOfferStatus()
+                ))
+                .toList();
     }
 
     public String deletePassenger(Long id) {
