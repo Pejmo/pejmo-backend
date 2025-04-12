@@ -34,6 +34,8 @@ public class PassengerService {
 
     private PassengerGetDTO convertToDTO(PassengerListing passengerListing) {
         return new PassengerGetDTO(
+                passengerListing.getFromLocation(),
+                passengerListing.getToLocation(),
                 passengerListing.getPassenger().getFirstName(),
                 passengerListing.getPassenger().getLastName(),
                 passengerListing.getPassenger().getUsername(),
@@ -62,6 +64,8 @@ public class PassengerService {
                 .toList();
 
         return new PassengerGetDTO(
+                passengerListing.getFromLocation(),
+                passengerListing.getToLocation(),
                 user.getFirstName(),
                 user.getLastName(),
                 user.getUsername(),
