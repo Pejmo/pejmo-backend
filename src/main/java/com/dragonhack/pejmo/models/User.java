@@ -26,7 +26,14 @@ public class User implements UserDetails {
     @Column(name = "last_name", length = 100, nullable = false)
     private String lastName;
 
+    @Column(nullable = false)
     private String email;
+
+    @OneToMany(mappedBy = "toUser")
+    private List<Review> reviewsReceived;
+
+    @Column(nullable = false)
+    String kycStatus;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -103,6 +110,22 @@ public class User implements UserDetails {
         this.email = email;
     }
 
+    public List<Review> getReviewsReceived() {
+        return reviewsReceived;
+    }
+
+    public void setReviewsReceived(List<Review> reviewsReceived) {
+        this.reviewsReceived = reviewsReceived;
+    }
+
+    public String getKycStatus() {
+        return kycStatus;
+    }
+
+    public void setKycStatus(String kycStatus) {
+        this.kycStatus = kycStatus;
+    }
+
     @Override
     public String toString() {
         return "User{" +
@@ -112,6 +135,7 @@ public class User implements UserDetails {
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", email='" + email + '\'' +
+                ", status='" + kycStatus + '\'' +
                 '}';
     }
 }

@@ -1,5 +1,7 @@
 package com.dragonhack.pejmo.controllers;
 
+import com.dragonhack.pejmo.dtos.LoginUserDTO;
+import com.dragonhack.pejmo.dtos.UserGetDTO;
 import com.dragonhack.pejmo.services.UserService;
 import org.springframework.web.bind.annotation.*;
 
@@ -12,8 +14,13 @@ public class UserController {
         this.userService = userService;
     }
 
+    @GetMapping("/users")
+    public String getUsers() {
+        return "samo da dela";
+    }
+
     @GetMapping("/users/{id}")
-    public String getUserById(@PathVariable Long id) {
+    public UserGetDTO getUserById(@PathVariable Long id) {
         return userService.getUserById(id);
     }
 
@@ -28,7 +35,7 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public String loginUser() {
+    public String loginUser(@RequestBody LoginUserDTO user) {
         return userService.loginUser();
     }
 
