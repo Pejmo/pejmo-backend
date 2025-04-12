@@ -3,11 +3,11 @@ package com.dragonhack.pejmo.dtos;
 import java.time.LocalDateTime;
 
 public record RideInput(
-        Long userId,
+        Long driverId,
         String fromLocation,
         String toLocation,
         LocalDateTime startTime,
         Double price,
-        Integer freeSeats
+        Integer allSeats
 ) {
 }

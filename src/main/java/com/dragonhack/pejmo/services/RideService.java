@@ -2,30 +2,34 @@ package com.dragonhack.pejmo.services;
 
 import com.dragonhack.pejmo.dtos.RideInput;
 import com.dragonhack.pejmo.exceptions.resource_not_found.ResourceNotFoundException;
-import com.dragonhack.pejmo.models.Ride;
+import com.dragonhack.pejmo.models.RideListing;
 import com.dragonhack.pejmo.models.User;
-import com.dragonhack.pejmo.repositories.RideRepository;
+import com.dragonhack.pejmo.repositories.RideListingRepository;
 import com.dragonhack.pejmo.repositories.UserRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
 @Service
 public class RideService {
-    private final RideRepository rideRepository;
+    private final RideListingRepository rideListingRepository;
     private final UserRepository userRepository;
 
-    public RideService(RideRepository rideRepository, UserRepository userRepository) {
-        this.rideRepository = rideRepository;
+    public RideService(RideListingRepository rideListingRepository, UserRepository userRepository) {
+        this.rideListingRepository = rideListingRepository;
         this.userRepository = userRepository;
     }
 
-    public List<Ride> getAllRides() {
-        return rideRepository.findAll();
+    public List<RideListing> getAllRides(
+
+
+    ) {
+        return rideListingRepository.findAll();
     }
 
-    public Ride getRideById(Long id) {
-       return rideRepository.findById(id).
+    public RideListing getRideById(Long id) {
+       return rideListingRepository.findById(id).
                orElseThrow(() -> new ResourceNotFoundException("Ride not found"));
     }
 
@@ -33,17 +37,17 @@ public class RideService {
         return "getPaymentDetails";
     }
 
-    public Ride createRide(RideInput rideInput) {
-        User user = userRepository.findById(rideInput.userId()).
+    public RideListing createRide(RideInput rideInput) {
+        User driver = userRepository.findById(rideInput.driverId()).
                 orElseThrow(() -> new ResourceNotFoundException("User not found"));
-        Ride ride = new Ride();
-        ride.setUser(user);
-        ride.setfromLocation(rideInput.fromLocation());
-        ride.settoLocation(rideInput.toLocation());
+        RideListing ride = new RideListing();
+        ride.setDriver(driver);
+        ride.setFromLocation(rideInput.fromLocation());
+        ride.setToLocation(rideInput.toLocation());
         ride.setStartTime(rideInput.startTime());
         ride.setPrice(rideInput.price());
-        ride.setFreeSeats(rideInput.freeSeats());
-        rideRepository.save(ride);
+        ride.setAllSeats(rideInput.allSeats());
+        rideListingRepository.save(ride);
         return ride;
     }
 

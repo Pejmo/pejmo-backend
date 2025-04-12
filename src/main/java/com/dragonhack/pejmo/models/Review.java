@@ -3,7 +3,7 @@ package com.dragonhack.pejmo.models;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "review_table")
+@Table(name = "review")
 public class Review {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
