@@ -26,6 +26,9 @@ public class RideListing {
     @Column(nullable = false)
     private Integer allSeats;
 
+    @Column(nullable = false)
+    private Integer takenSeats;
+
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
     private User driver;
@@ -62,6 +65,10 @@ public class RideListing {
         return allSeats;
     }
 
+    public Integer getTakenSeats() {
+        return takenSeats;
+    }
+
     public User getDriver() {
         return driver;
     }
@@ -94,6 +101,10 @@ public class RideListing {
         this.allSeats = allSeats;
     }
 
+    public void setTakenSeats(Integer takenSeats) {
+        this.takenSeats = takenSeats;
+    }
+
     public void setDriver(User driver) {
         this.driver = driver;
     }
@@ -111,6 +122,7 @@ public class RideListing {
                 ", startTime=" + startTime +
                 ", price=" + price +
                 ", allSeats=" + allSeats +
+                ", takenSeats=" + takenSeats +
                 ", driver=" + driver +
                 ", passengers=" + passengers +
                 '}';

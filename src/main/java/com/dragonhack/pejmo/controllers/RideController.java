@@ -1,8 +1,10 @@
 package com.dragonhack.pejmo.controllers;
 
+import com.dragonhack.pejmo.dtos.PassengerRequestDTO;
 import com.dragonhack.pejmo.dtos.RideInputDTO;
 import com.dragonhack.pejmo.dtos.RideOutputDTO;
 import com.dragonhack.pejmo.models.RideListing;
+import com.dragonhack.pejmo.services.PassengerService;
 import com.dragonhack.pejmo.services.RideService;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,9 +16,11 @@ import java.util.List;
 public class RideController {
 
     private final RideService rideService;
+    private final PassengerService passengerService;
 
-    public RideController(RideService rideService) {
+    public RideController(RideService rideService, PassengerService passengerService) {
         this.rideService = rideService;
+        this.passengerService = passengerService;
     }
 
     @GetMapping()
@@ -32,7 +36,7 @@ public class RideController {
     }
 
     @GetMapping("/{id}")
-    public RideListing getRideById(@PathVariable Long id) {
+    public RideOutputDTO getRideById(@PathVariable Long id) {
         return rideService.getRideById(id);
     }
 
@@ -54,5 +58,20 @@ public class RideController {
     @DeleteMapping("/{id}")
     public String deleteRide(@PathVariable Long id) {
         return rideService.deleteRide(id);
+    }
+
+    @PostMapping("/{username}/request/{rideId}")
+    public PassengerRequestDTO requestRide(@PathVariable String username, @PathVariable Long rideId) {
+        return rideService.requestRide(username, rideId);
+    }
+
+    @GetMapping("/{id}/requests")
+    public List<PassengerRequestDTO> getRequests(@PathVariable Long id) {
+        return rideService.getRequests(id);
+    }
+
+    @PostMapping("/approve/{requestId}")
+    public PassengerRequestDTO approveRequest(@PathVariable Long requestId) {
+        return rideService.approveRequest(requestId);
     }
 }
