@@ -2,6 +2,7 @@ package com.dragonhack.pejmo.controllers;
 
 import com.dragonhack.pejmo.dtos.PassengerCreateDTO;
 import com.dragonhack.pejmo.dtos.PassengerGetDTO;
+import com.dragonhack.pejmo.dtos.RideOfferDTO;
 import com.dragonhack.pejmo.services.PassengerService;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
@@ -39,9 +40,19 @@ public class PassengerController {
         passengerService.createPassenger(dto);
     }
 
-    @PostMapping("/{id}/invite")
-    public String invitePassenger(@PathVariable Long id) {
-        return passengerService.invitePassenger(id);
+    @PostMapping("/{username}/offer/{rideId}")
+    public void offerRide(@PathVariable String username, @PathVariable long rideId) {
+        passengerService.offerRide(username, rideId);
+    }
+
+    @PostMapping("/{username}/offer/{offerId}/accept")
+    public void acceptOfferedRide(@PathVariable String username, @PathVariable long offerId) {
+        passengerService.acceptOfferedRide(username, offerId);
+    }
+
+    @GetMapping("/offers/{username}/accepted")
+    public List<RideOfferDTO> getAcceptedOffersByDriver(@PathVariable String username) {
+        return passengerService.getAcceptedOffersByDriver(username);
     }
 
     @DeleteMapping("/{id}")

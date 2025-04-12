@@ -1,4 +1,6 @@
 package com.dragonhack.pejmo.dtos;
 
-public record RideOfferDTO(String firstName, String secondName, String username) {
+import com.dragonhack.pejmo.models.OfferStatus;
+
+public record RideOfferDTO(Long id, String firstName, String secondName, String username, OfferStatus offerStatus) {
 }

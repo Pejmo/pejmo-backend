@@ -1,11 +1,14 @@
 package com.dragonhack.pejmo.services;
 
+import com.dragonhack.pejmo.dtos.RegisterUserDTO;
 import com.dragonhack.pejmo.dtos.ReviewGetDTO;
 import com.dragonhack.pejmo.dtos.UserGetDTO;
+import com.dragonhack.pejmo.exceptions.conflict.ConflictException;
 import com.dragonhack.pejmo.exceptions.resource_not_found.ResourceNotFoundException;
 import com.dragonhack.pejmo.models.Review;
 import com.dragonhack.pejmo.models.User;
 import com.dragonhack.pejmo.repositories.UserRepository;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -14,9 +17,11 @@ import java.util.stream.Collectors;
 @Service
 public class UserService {
     private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
-    public UserService(UserRepository userRepository) {
+    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     public UserGetDTO getUserByUsername(String username) {
@@ -37,8 +42,20 @@ public class UserService {
         return "loginUser";
     }
 
-    public String registerUser() {
-        return "registerUser";
+    public void registerUser(RegisterUserDTO dto) {
+        if (userRepository.existsByUsername(dto.username()) || userRepository.existsByEmail(dto.email())) {
+            throw new ConflictException("Username or email already exists");
+        }
+
+        User user = new User();
+        user.setUsername(dto.username());
+        user.setPassword(passwordEncoder.encode(dto.password()));
+        user.setFirstName(dto.firstName());
+        user.setLastName(dto.lastName());
+        user.setEmail(dto.email());
+        user.setKycStatus("pending");
+
+        userRepository.save(user);
     }
 
     public String deleteUser(Long id) {
@@ -49,7 +66,7 @@ public class UserService {
         List<Review> reviews = user.getReviewsReceived();
 
         if (reviews == null || reviews.isEmpty()) {
-            return -1.0;
+            return 0.0;
         }
 
         return reviews.stream()

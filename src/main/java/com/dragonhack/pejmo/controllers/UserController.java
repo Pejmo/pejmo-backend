@@ -1,8 +1,10 @@
 package com.dragonhack.pejmo.controllers;
 
 import com.dragonhack.pejmo.dtos.LoginUserDTO;
+import com.dragonhack.pejmo.dtos.RegisterUserDTO;
 import com.dragonhack.pejmo.dtos.UserGetDTO;
 import com.dragonhack.pejmo.services.UserService;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -40,8 +42,8 @@ public class UserController {
     }
 
     @PostMapping("/register")
-    public String registerUser() {
-        return userService.registerUser();
+    public void registerUser(@RequestBody RegisterUserDTO dto) {
+        userService.registerUser(dto);
     }
 
     @DeleteMapping("/users/{id}")
