@@ -3,6 +3,7 @@ package com.dragonhack.pejmo.models;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Table(name = "passenger_listing")
@@ -30,6 +31,14 @@ public class PassengerListing {
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
     private User passenger;
+
+    @ManyToMany
+    @JoinTable(
+            name = "passenger_listing_ride_offers",
+            joinColumns = @JoinColumn(name = "passenger_listing_id"),
+            inverseJoinColumns = @JoinColumn(name = "ride_listing_id")
+    )
+    private List<RideOffer> driverOffers;
 
     public Long getId() {
         return id;
@@ -85,6 +94,14 @@ public class PassengerListing {
 
     public void setPassenger(User passenger) {
         this.passenger = passenger;
+    }
+
+    public List<RideOffer> getDriverOffers() {
+        return driverOffers;
+    }
+
+    public void setDriverOffers(List<RideOffer> driverOffers) {
+        this.driverOffers = driverOffers;
     }
 
     @Override

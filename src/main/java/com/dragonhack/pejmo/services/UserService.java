@@ -19,10 +19,10 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    public UserGetDTO getUserById(Long id) {
-        User user = userRepository.findById(id).orElseThrow(
-                () -> new ResourceNotFoundException("User with id " + id + " not found"));
-        return new UserGetDTO(user.getFirstName(), user.getLastName(), getAverageRating(user), getReviewsForUser(user), user.getKycStatus());
+    public UserGetDTO getUserByUsername(String username) {
+        User user = userRepository.findByUsername(username).orElseThrow(
+                () -> new ResourceNotFoundException("User with username " + username + " not found"));
+        return new UserGetDTO(user.getFirstName(), user.getLastName(), user.getUsername(), getAverageRating(user), getReviewsForUser(user), user.getKycStatus());
     }
 
     public String getCurrentUser() {
