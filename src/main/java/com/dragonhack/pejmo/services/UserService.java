@@ -45,7 +45,7 @@ public class UserService {
         return "deleteUser";
     }
 
-    private double getAverageRating(User user) {
+    public double getAverageRating(User user) {
         List<Review> reviews = user.getReviewsReceived();
 
         if (reviews == null || reviews.isEmpty()) {

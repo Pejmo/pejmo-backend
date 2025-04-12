@@ -1,14 +1,14 @@
 package com.dragonhack.pejmo.services;
 
-import com.dragonhack.pejmo.repositories.RideRepository;
+import com.dragonhack.pejmo.repositories.RideListingRepository;
 import org.springframework.stereotype.Service;
 
 @Service
 public class RideService {
-    private final RideRepository rideRepository;
+    private final RideListingRepository rideListingRepository;
 
-    public RideService(RideRepository rideRepository) {
-        this.rideRepository = rideRepository;
+    public RideService(RideListingRepository rideListingRepository) {
+        this.rideListingRepository = rideListingRepository;
     }
 
     public String getAllRides() {

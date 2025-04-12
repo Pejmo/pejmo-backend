@@ -1,7 +1,10 @@
 package com.dragonhack.pejmo.controllers;
 
+import com.dragonhack.pejmo.dtos.PassengerGetDTO;
 import com.dragonhack.pejmo.services.PassengerService;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/passengers")
@@ -14,12 +17,12 @@ public class PassengerController {
     }
 
     @GetMapping()
-    public String getAllPassengers() {
+    public List<PassengerGetDTO> getAllPassengers() {
         return passengerService.getAllPassengers();
     }
 
     @GetMapping("/{id}")
-    public String getPassengerById(@PathVariable Long id) {
+    public PassengerGetDTO getPassengerById(@PathVariable Long id) {
         return passengerService.getPassengerById(id);
     }
 
