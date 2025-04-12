@@ -1,7 +1,12 @@
 package com.dragonhack.pejmo.services;
 
+import com.dragonhack.pejmo.dtos.RideInput;
+import com.dragonhack.pejmo.exceptions.resource_not_found.ResourceNotFoundException;
+import com.dragonhack.pejmo.models.Ride;
 import com.dragonhack.pejmo.repositories.RideRepository;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class RideService {
@@ -11,20 +16,22 @@ public class RideService {
         this.rideRepository = rideRepository;
     }
 
-    public String getAllRides() {
-        return "getAllRides";
+    public List<Ride> getAllRides() {
+        return rideRepository.findAll();
     }
 
-    public String getRideById(Long id) {
-        return "getRideById";
+    public Ride getRideById(Long id) {
+       return rideRepository.findById(id).
+               orElseThrow(() -> new ResourceNotFoundException("Ride not found"));
     }
 
     public String getPaymentDetails(Long id) {
         return "getPaymentDetails";
     }
 
-    public String createRide() {
-        return "createRide";
+    public Ride createRide(RideInput rideInput) {
+        Ride ride = new Ride();
+        return ride;
     }
 
     public String bookRide(Long id) {
