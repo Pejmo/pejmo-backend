@@ -1,7 +1,11 @@
 package com.dragonhack.pejmo.controllers;
 
+import com.dragonhack.pejmo.dtos.RideInput;
+import com.dragonhack.pejmo.models.Ride;
 import com.dragonhack.pejmo.services.RideService;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/rides")
@@ -14,12 +18,12 @@ public class RideController {
     }
 
     @GetMapping()
-    public String getAllRides() {
+    public List<Ride> getAllRides() {
         return rideService.getAllRides();
     }
 
     @GetMapping("/{id}")
-    public String getRideById(@PathVariable Long id) {
+    public Ride getRideById(@PathVariable Long id) {
         return rideService.getRideById(id);
     }
 
@@ -29,8 +33,8 @@ public class RideController {
     }
 
     @PostMapping()
-    public String createRide() {
-        return rideService.createRide();
+    public Ride createRide(@RequestBody RideInput rideInput) {
+        return rideService.createRide(rideInput);
     }
 
     @PostMapping("/{id}/book")
