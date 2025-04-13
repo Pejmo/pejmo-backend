@@ -96,39 +96,39 @@ public class DatabaseInitializer {
             PassengerListing passengerListing2 = new PassengerListing();
             passengerListing2.setFromLocation("Ljubljana");
             passengerListing2.setToLocation("Koper");
-            passengerListing2.setStartTime(LocalDateTime.now().plusDays(3).withMinute(0).withSecond(0).withNano(0));
+            passengerListing2.setStartTime(LocalDateTime.now().plusDays(1).withMinute(0).withSecond(0).withNano(0));
             passengerListing2.setPrice(8.0);
             passengerListing2.setSeatsNeeded(3.0);
             passengerListing2.setPassenger(alice);
 
             PassengerListing passengerListing3 = new PassengerListing();
-            passengerListing3.setFromLocation("Maribor");
-            passengerListing3.setToLocation("Celje");
-            passengerListing3.setStartTime(LocalDateTime.now().plusDays(2).withMinute(0).withSecond(0).withNano(0));
+            passengerListing3.setFromLocation("Ljubljana");
+            passengerListing3.setToLocation("Koper");
+            passengerListing3.setStartTime(LocalDateTime.now().plusDays(1).withMinute(0).withSecond(0).withNano(0));
             passengerListing3.setPrice(6.0);
             passengerListing3.setSeatsNeeded(1.0);
             passengerListing3.setPassenger(tom);
 
             PassengerListing passengerListing6 = new PassengerListing();
-            passengerListing6.setFromLocation("Ptuj");
-            passengerListing6.setToLocation("Maribor");
+            passengerListing6.setFromLocation("Ljubljana");
+            passengerListing6.setToLocation("Koper");
             passengerListing6.setStartTime(LocalDateTime.now().plusDays(2).plusHours(3).withMinute(0).withSecond(0).withNano(0));
             passengerListing6.setPrice(9.0);
             passengerListing6.setSeatsNeeded(1.0);
             passengerListing6.setPassenger(veno);
 
             PassengerListing passengerListing7 = new PassengerListing();
-            passengerListing7.setFromLocation("Murska Sobota");
-            passengerListing7.setToLocation("Ljubljana");
-            passengerListing7.setStartTime(LocalDateTime.now().plusDays(5).withMinute(0).withSecond(0).withNano(0));
-            passengerListing7.setPrice(10.0);
+            passengerListing7.setFromLocation("Ljubljana");
+            passengerListing7.setToLocation("Koper");
+            passengerListing7.setStartTime(LocalDateTime.now().plusDays(2).withMinute(0).withSecond(0).withNano(0));
+            passengerListing7.setPrice(9.0);
             passengerListing7.setSeatsNeeded(2.0);
             passengerListing7.setPassenger(veno2);
 
             PassengerListing passengerListing8 = new PassengerListing();
-            passengerListing8.setFromLocation("Kranj");
-            passengerListing8.setToLocation("Maribor");
-            passengerListing8.setStartTime(LocalDateTime.now().plusDays(1).withMinute(0).withSecond(0).withNano(0));
+            passengerListing8.setFromLocation("Ljubljana");
+            passengerListing8.setToLocation("Koper");
+            passengerListing8.setStartTime(LocalDateTime.now().plusDays(2).withMinute(0).withSecond(0).withNano(0));
             passengerListing8.setPrice(5.0);
             passengerListing8.setSeatsNeeded(1.0);
             passengerListing8.setPassenger(veno3);
@@ -164,7 +164,7 @@ public class DatabaseInitializer {
             RideListing ride3 = new RideListing();
             ride3.setFromLocation("Koper");
             ride3.setToLocation("Ljubljana");
-            ride3.setStartTime(LocalDateTime.now().plusDays(3).withMinute(0).withSecond(0).withNano(0));
+            ride3.setStartTime(LocalDateTime.now().plusDays(2).withMinute(0).withSecond(0).withNano(0));
             ride3.setPrice(5.0);
             ride3.setAllSeats(4);
             ride3.setTakenSeats(0);
@@ -183,7 +183,7 @@ public class DatabaseInitializer {
             RideListing ride5 = new RideListing();
             ride5.setFromLocation("Murska Sobota");
             ride5.setToLocation("Kranj");
-            ride5.setStartTime(LocalDateTime.now().plusDays(4).withMinute(0).withSecond(0).withNano(0));
+            ride5.setStartTime(LocalDateTime.now().plusDays(1).withMinute(0).withSecond(0).withNano(0));
             ride5.setPrice(8.0);
             ride5.setAllSeats(4);
             ride5.setTakenSeats(1);
@@ -230,7 +230,7 @@ public class DatabaseInitializer {
             RideListing ride7 = new RideListing();
             ride7.setFromLocation("Celje");
             ride7.setToLocation("Maribor");
-            ride7.setStartTime(LocalDateTime.now().plusDays(3).withHour(11).withMinute(0).withSecond(0).withNano(0));
+            ride7.setStartTime(LocalDateTime.now().plusDays(2).withHour(11).withMinute(0).withSecond(0).withNano(0));
             ride7.setPrice(5.0);
             ride7.setAllSeats(4);
             ride7.setTakenSeats(0);
