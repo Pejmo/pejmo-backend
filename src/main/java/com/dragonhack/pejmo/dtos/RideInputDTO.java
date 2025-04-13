@@ -3,7 +3,7 @@ package com.dragonhack.pejmo.dtos;
 import java.time.LocalDateTime;
 
 public record RideInputDTO(
-        Long driverId,
+        String username,
         String fromLocation,
         String toLocation,
         LocalDateTime startTime,

@@ -41,6 +41,9 @@ public class RideListing {
     )
     private List<User> passengers;
 
+    @OneToMany(mappedBy = "rideListing")
+    private List<LocationPoint> pickUpPoints;
+
     public Long getId() {
         return id;
     }
@@ -112,6 +115,15 @@ public class RideListing {
     public void setPassengers(List<User> passengers) {
         this.passengers = passengers;
     }
+
+    public List<LocationPoint> getPickUpPoints() {
+        return pickUpPoints;
+    }
+
+    public void setPickUpPoints(List<LocationPoint> pickUpPoints) {
+        this.pickUpPoints = pickUpPoints;
+    }
+
 
     @Override
     public String toString() {

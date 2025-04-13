@@ -1,8 +1,6 @@
 package com.dragonhack.pejmo.controllers;
 
-import com.dragonhack.pejmo.dtos.PassengerRequestDTO;
-import com.dragonhack.pejmo.dtos.RideInputDTO;
-import com.dragonhack.pejmo.dtos.RideOutputDTO;
+import com.dragonhack.pejmo.dtos.*;
 import com.dragonhack.pejmo.models.RideListing;
 import com.dragonhack.pejmo.services.PassengerService;
 import com.dragonhack.pejmo.services.RideService;
@@ -70,8 +68,18 @@ public class RideController {
         return rideService.getRequests(id);
     }
 
-    @PostMapping("/approve/{requestId}")
+    @PutMapping("/accept/{requestId}")
     public PassengerRequestDTO approveRequest(@PathVariable Long requestId) {
         return rideService.approveRequest(requestId);
+    }
+
+    @GetMapping("{id}/passengers")
+    public List<SimpleUserDTO> getPassengers(@PathVariable Long id) {
+        return rideService.getPassengers(id);
+    }
+
+    @PutMapping("/{id}/pickUpPoint")
+    public RideOutputDTO addPickUpPoint(@PathVariable Long id, @RequestBody LocationPointDTO locationPointDTO) {
+        return rideService.addPickUpPoint(id, locationPointDTO);
     }
 }

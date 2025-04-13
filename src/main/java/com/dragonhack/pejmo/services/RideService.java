@@ -3,13 +3,11 @@ package com.dragonhack.pejmo.services;
 import com.dragonhack.pejmo.dtos.*;
 import com.dragonhack.pejmo.exceptions.conflict.ConflictException;
 import com.dragonhack.pejmo.exceptions.resource_not_found.ResourceNotFoundException;
+import com.dragonhack.pejmo.models.LocationPoint;
 import com.dragonhack.pejmo.models.PassengerRequest;
 import com.dragonhack.pejmo.models.RideListing;
 import com.dragonhack.pejmo.models.User;
-import com.dragonhack.pejmo.repositories.PassengerRepository;
-import com.dragonhack.pejmo.repositories.PassengerRequestRepository;
-import com.dragonhack.pejmo.repositories.RideListingRepository;
-import com.dragonhack.pejmo.repositories.UserRepository;
+import com.dragonhack.pejmo.repositories.*;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -22,14 +20,14 @@ public class RideService {
     private final UserRepository userRepository;
     private final UserService userService;
     private final PassengerRequestRepository passengerRequestRepository;
-    private final PassengerRepository passengerRepository;
+    private final LocationPointRepository locationPointRepository;
 
-    public RideService(RideListingRepository rideListingRepository, UserRepository userRepository, UserService userService, PassengerRequestRepository passengerRequestRepository, PassengerRepository passengerRepository) {
+    public RideService(RideListingRepository rideListingRepository, UserRepository userRepository, UserService userService, PassengerRequestRepository passengerRequestRepository, PassengerRepository passengerRepository, LocationPointRepository locationPointRepository) {
         this.rideListingRepository = rideListingRepository;
         this.userRepository = userRepository;
         this.userService = userService;
         this.passengerRequestRepository = passengerRequestRepository;
-        this.passengerRepository = passengerRepository;
+        this.locationPointRepository = locationPointRepository;
     }
 
     public List<RideOutputDTO> getAllRides(
@@ -45,22 +43,26 @@ public class RideService {
     }
 
     public RideOutputDTO convertToDTO(RideListing rideListing) {
-        User driver = rideListing.getDriver();
-        SimpleUserDTO driverDTO = new SimpleUserDTO(
-                driver.getUsername(),
-                driver.getFirstName(),
-                driver.getLastName(),
-                userService.getAverageRating(driver)
-        );
         return new RideOutputDTO(
                 rideListing.getId(),
-                driverDTO,
+                convertToDTO(rideListing.getDriver()),
                 rideListing.getFromLocation(),
                 rideListing.getToLocation(),
                 rideListing.getStartTime(),
                 rideListing.getPrice(),
                 rideListing.getAllSeats(),
-                rideListing.getTakenSeats()
+                rideListing.getTakenSeats(),
+                rideListing.getPickUpPoints().stream()
+                        .map(this::convertToDTO)
+                        .toList()
+        );
+    }
+
+    public LocationPointDTO convertToDTO(LocationPoint point) {
+        return new LocationPointDTO(
+                point.getLatitude(),
+                point.getLongitude(),
+                point.getName()
         );
     }
 
@@ -75,7 +77,7 @@ public class RideService {
     }
 
     public RideOutputDTO createRide(RideInputDTO rideInputDTO) {
-        User driver = userRepository.findById(rideInputDTO.driverId()).
+        User driver = userRepository.findByUsername(rideInputDTO.username()).
                 orElseThrow(() -> new ResourceNotFoundException("User not found"));
         RideListing ride = new RideListing();
         ride.setDriver(driver);
@@ -86,6 +88,22 @@ public class RideService {
         ride.setAllSeats(rideInputDTO.allSeats());
         ride.setTakenSeats(0);
         ride.setPassengers(new ArrayList<>());
+        ride.setPickUpPoints(new ArrayList<>());
+        rideListingRepository.save(ride);
+        return convertToDTO(ride);
+    }
+
+    public RideOutputDTO addPickUpPoint(Long id, LocationPointDTO point) {
+        RideListing ride = rideListingRepository.findById(id).
+                orElseThrow(() -> new ResourceNotFoundException("Ride Listing not found"));
+        List<LocationPoint> pickUpPoints = ride.getPickUpPoints();
+        LocationPoint pickUpPoint = new LocationPoint();
+        pickUpPoint.setRideListing(ride);
+        pickUpPoint.setLatitude(point.latitude());
+        pickUpPoint.setLongitude(point.longitude());
+        pickUpPoint.setName(point.name());
+        locationPointRepository.save(pickUpPoint);
+        pickUpPoints.add(pickUpPoint);
         rideListingRepository.save(ride);
         return convertToDTO(ride);
     }
@@ -116,14 +134,18 @@ public class RideService {
         User user = request.getPassenger();
         return new PassengerRequestDTO(
                 request.getId(),
-                new SimpleUserDTO(
+                convertToDTO(user),
+                request.getRideListing().getId(),
+                request.getRequestStatus()
+        );
+    }
+
+    public SimpleUserDTO convertToDTO(User user) {
+        return new SimpleUserDTO(
                         user.getUsername(),
                         user.getFirstName(),
                         user.getLastName(),
                         userService.getAverageRating(user)
-                ),
-                request.getRideListing().getId(),
-                request.getRequestStatus()
         );
     }
 
@@ -155,6 +177,14 @@ public class RideService {
         }
 
         return convertToDTO(request);
+    }
+
+    public List<SimpleUserDTO> getPassengers(Long id) {
+        RideListing ride = rideListingRepository.findById(id).
+                orElseThrow(() -> new ResourceNotFoundException("Ride Listing not found"));
+        return ride.getPassengers().stream()
+                .map(this::convertToDTO)
+                .toList();
     }
 
 

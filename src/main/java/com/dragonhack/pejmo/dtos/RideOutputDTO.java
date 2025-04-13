@@ -1,6 +1,7 @@
 package com.dragonhack.pejmo.dtos;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 public record RideOutputDTO(
         Long id,
@@ -10,6 +11,7 @@ public record RideOutputDTO(
         LocalDateTime startTime,
         Double price,
         Integer allSeats,
-        Integer takenSeats
+        Integer takenSeats,
+        List<LocationPointDTO> pickUpPoints
 ) {
 }
