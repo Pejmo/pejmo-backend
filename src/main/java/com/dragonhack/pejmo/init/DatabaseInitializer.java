@@ -22,35 +22,35 @@ public class DatabaseInitializer {
         return args -> {
             // Create Users
             User alice = new User();
-            alice.setUsername("alice");
+            alice.setUsername("alenka");
             alice.setPassword(passwordEncoder.encode("password1"));
-            alice.setFirstName("Alice");
-            alice.setLastName("Wonderland");
-            alice.setEmail("alice@example.com");
+            alice.setFirstName("Alenka");
+            alice.setLastName("Čudežna");
+            alice.setEmail("alenka@example.com");
             alice.setKycStatus("pending");
 
             User bob = new User();
-            bob.setUsername("bob");
+            bob.setUsername("bojan");
             bob.setPassword(passwordEncoder.encode("password2"));
-            bob.setFirstName("Bob");
-            bob.setLastName("Builder");
-            bob.setEmail("bob@example.com");
+            bob.setFirstName("Bojan");
+            bob.setLastName("Gradbenik");
+            bob.setEmail("bojan@example.com");
             bob.setKycStatus("validated");
 
             User tom = new User();
-            tom.setUsername("tom");
+            tom.setUsername("tomaz");
             tom.setPassword(passwordEncoder.encode("password3"));
-            tom.setFirstName("Tom");
-            tom.setLastName("Builder");
-            tom.setEmail("bob@example.com");
+            tom.setFirstName("Tomaž");
+            tom.setLastName("Gradbenik");
+            tom.setEmail("tomaz@example.com");
             tom.setKycStatus("validated");
 
             User veno = new User();
-            veno.setUsername("nik");
+            veno.setUsername("niko");
             veno.setPassword(passwordEncoder.encode("password4"));
-            veno.setFirstName("Nik");
+            veno.setFirstName("Niko");
             veno.setLastName("Niki");
-            veno.setEmail("nik@example.com");
+            veno.setEmail("niko@example.com");
             veno.setKycStatus("pending");
 
             userRepository.saveAll(List.of(alice, bob, tom, veno));
@@ -80,56 +80,56 @@ public class DatabaseInitializer {
             PassengerListing passengerListing1 = new PassengerListing();
             passengerListing1.setFromLocation("Koper");
             passengerListing1.setToLocation("Ljubljana");
-            passengerListing1.setStartTime(LocalDateTime.now().plusDays(1));
-            passengerListing1.setPrice(125.0);
+            passengerListing1.setStartTime(LocalDateTime.now().plusDays(1).withMinute(0).withSecond(0).withNano(0));
+            passengerListing1.setPrice(7.0);
             passengerListing1.setSeatsNeeded(2.0);
             passengerListing1.setPassenger(bob);
 
             PassengerListing passengerListing2 = new PassengerListing();
             passengerListing2.setFromLocation("Ljubljana");
             passengerListing2.setToLocation("Koper");
-            passengerListing2.setStartTime(LocalDateTime.now().plusDays(3));
-            passengerListing2.setPrice(150.0);
+            passengerListing2.setStartTime(LocalDateTime.now().plusDays(3).withMinute(0).withSecond(0).withNano(0));
+            passengerListing2.setPrice(8.0);
             passengerListing2.setSeatsNeeded(3.0);
             passengerListing2.setPassenger(alice);
 
             PassengerListing passengerListing3 = new PassengerListing();
             passengerListing3.setFromLocation("Maribor");
             passengerListing3.setToLocation("Celje");
-            passengerListing3.setStartTime(LocalDateTime.now().plusDays(2));
-            passengerListing3.setPrice(80.0);
+            passengerListing3.setStartTime(LocalDateTime.now().plusDays(2).withMinute(0).withSecond(0).withNano(0));
+            passengerListing3.setPrice(6.0);
             passengerListing3.setSeatsNeeded(1.0);
             passengerListing3.setPassenger(bob);
 
             PassengerListing passengerListing6 = new PassengerListing();
             passengerListing6.setFromLocation("Ptuj");
             passengerListing6.setToLocation("Maribor");
-            passengerListing6.setStartTime(LocalDateTime.now().plusDays(2).plusHours(3));
-            passengerListing6.setPrice(60.0);
+            passengerListing6.setStartTime(LocalDateTime.now().plusDays(2).plusHours(3).withMinute(0).withSecond(0).withNano(0));
+            passengerListing6.setPrice(9.0);
             passengerListing6.setSeatsNeeded(1.0);
             passengerListing6.setPassenger(alice);
 
             PassengerListing passengerListing7 = new PassengerListing();
             passengerListing7.setFromLocation("Murska Sobota");
             passengerListing7.setToLocation("Ljubljana");
-            passengerListing7.setStartTime(LocalDateTime.now().plusDays(5));
-            passengerListing7.setPrice(130.0);
+            passengerListing7.setStartTime(LocalDateTime.now().plusDays(5).withMinute(0).withSecond(0).withNano(0));
+            passengerListing7.setPrice(10.0);
             passengerListing7.setSeatsNeeded(2.0);
             passengerListing7.setPassenger(bob);
 
             PassengerListing passengerListing8 = new PassengerListing();
             passengerListing8.setFromLocation("Kranj");
             passengerListing8.setToLocation("Maribor");
-            passengerListing8.setStartTime(LocalDateTime.now().plusDays(1));
-            passengerListing8.setPrice(100.0);
+            passengerListing8.setStartTime(LocalDateTime.now().plusDays(1).withMinute(0).withSecond(0).withNano(0));
+            passengerListing8.setPrice(5.0);
             passengerListing8.setSeatsNeeded(1.0);
             passengerListing8.setPassenger(alice);
 
             PassengerListing passengerListing9 = new PassengerListing();
             passengerListing9.setFromLocation("Celje");
             passengerListing9.setToLocation("Ptuj");
-            passengerListing9.setStartTime(LocalDateTime.now().plusDays(3));
-            passengerListing9.setPrice(70.0);
+            passengerListing9.setStartTime(LocalDateTime.now().plusDays(3).withMinute(0).withSecond(0).withNano(0));
+            passengerListing9.setPrice(7.5);
             passengerListing9.setSeatsNeeded(2.0);
             passengerListing9.setPassenger(bob);
 
@@ -146,8 +146,8 @@ public class DatabaseInitializer {
             RideListing ride1 = new RideListing();
             ride1.setFromLocation("Ljubljana");
             ride1.setToLocation("Maribor");
-            ride1.setStartTime(LocalDateTime.now().plusDays(1));
-            ride1.setPrice(100.0);
+            ride1.setStartTime(LocalDateTime.now().plusDays(1).withMinute(0).withSecond(0).withNano(0));
+            ride1.setPrice(9.0);
             ride1.setAllSeats(4);
             ride1.setTakenSeats(1);
             ride1.setDriver(bob);
@@ -156,8 +156,8 @@ public class DatabaseInitializer {
             RideListing ride2 = new RideListing();
             ride2.setFromLocation("Celje");
             ride2.setToLocation("Kranj");
-            ride2.setStartTime(LocalDateTime.now().plusDays(2));
-            ride2.setPrice(85.0);
+            ride2.setStartTime(LocalDateTime.now().plusDays(2).withMinute(0).withSecond(0).withNano(0));
+            ride2.setPrice(6.5);
             ride2.setAllSeats(3);
             ride2.setTakenSeats(2);
             ride2.setDriver(alice);
@@ -166,8 +166,8 @@ public class DatabaseInitializer {
             RideListing ride3 = new RideListing();
             ride3.setFromLocation("Koper");
             ride3.setToLocation("Ljubljana");
-            ride3.setStartTime(LocalDateTime.now().plusDays(3));
-            ride3.setPrice(3.00);
+            ride3.setStartTime(LocalDateTime.now().plusDays(3).withMinute(0).withSecond(0).withNano(0));
+            ride3.setPrice(5.5);
             ride3.setAllSeats(4);
             ride3.setTakenSeats(0);
             ride3.setDriver(bob);
@@ -175,8 +175,8 @@ public class DatabaseInitializer {
             RideListing ride4 = new RideListing();
             ride4.setFromLocation("Ptuj");
             ride4.setToLocation("Celje");
-            ride4.setStartTime(LocalDateTime.now().plusDays(1).plusHours(5));
-            ride4.setPrice(70.0);
+            ride4.setStartTime(LocalDateTime.now().plusDays(1).plusHours(5).withMinute(0).withSecond(0).withNano(0));
+            ride4.setPrice(7.5);
             ride4.setAllSeats(2);
             ride4.setTakenSeats(1);
             ride4.setDriver(alice);
@@ -185,8 +185,8 @@ public class DatabaseInitializer {
             RideListing ride5 = new RideListing();
             ride5.setFromLocation("Murska Sobota");
             ride5.setToLocation("Kranj");
-            ride5.setStartTime(LocalDateTime.now().plusDays(4));
-            ride5.setPrice(110.0);
+            ride5.setStartTime(LocalDateTime.now().plusDays(4).withMinute(0).withSecond(0).withNano(0));
+            ride5.setPrice(8.0);
             ride5.setAllSeats(4);
             ride5.setTakenSeats(1);
             ride5.setDriver(bob);
@@ -211,7 +211,6 @@ public class DatabaseInitializer {
             point3.setName("End - Maribor");
 
             rideListingRepository.save(ride5);
-
             locationPointRepository.saveAll(List.of(point1, point2, point3));
             ride5.setPickUpPoints(List.of(point1, point2, point3));
 
