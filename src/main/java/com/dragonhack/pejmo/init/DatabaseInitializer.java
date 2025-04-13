@@ -85,7 +85,7 @@ public class DatabaseInitializer {
             r2.setRating(4);
 
             Review r3 = new Review();
-            r3.setFromUser(alice);
+            r3.setFromUser(veno3);
             r3.setToUser(bob);
             r3.setContent("Bad driver");
             r3.setRating(2);
